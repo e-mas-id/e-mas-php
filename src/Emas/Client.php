@@ -14,14 +14,62 @@ final class Client
         $this->secretKey = $secret;
         $this->env       = $env;
         $this->debug     = $debug;
-//        $this->client    = new;
+        $this->client    = new \GuzzleHttp\Client;
     }
     
-    public function call($path, $method, array $data) {
+    private function call($path, $method, array $data) {
+        $base = $this->env === 'dev' ? 'https://oroconnect-dev.e-mas.com/v1' : 'https://oroconnect.e-mas.com/v1';
+        $time = date('Y-m-d H:i:s');
+        $opt  = array(
+            'headers'   => array(
+                'app-id'    => $this->appId,
+                'timestamp' => $time,
+                'signature' => sha1(md5($this->appId . $time . $this->secretKey)),
+                'content-type' => 'application/json',
+                'accept-type'  => 'application/json',
+            ),
+            'debug'     => $this->debug,
+        );
         
+        if (strtoupper($method) === 'POST') {
+            $opt['json'] = $data;
+        } else if (strtoupper($method) === 'GET') {
+            $opt['query'] = $data;
+        }
+        
+        $res = $this->client->request($method, $base . $path, $opt);
+        $rs = \GuzzleHttp\json_decode($res->getBody());
+        
+        return $rs;
     }
     
+    /**
+     * Init transaction
+     * 
+     * @param string    $customerId
+     * @param float     $weight
+     * @return \StdClass
+     */
     public function buyInit($customerId, $weight) {
-        
+        return $this->call('/thirdparty/buy-gold', 'POST', array(
+            'customer_id'   => (string) $customerId,
+            'weight'        => (float) $weight,
+        ));
+    }
+    
+    /**
+     * Confirm transaction
+     * 
+     * @param string    $customerId
+     * @param string    $paymentId
+     * @param string    $vendorTransactionId
+     * @return \StdClass
+     */
+    public function buyConfirm($customerId, $paymentId, $vendorTransactionId) {
+        return $this->call('/thirdparty/buy-confirm', 'POST', array(
+            'customer_id' => (string) $customerId,
+            'payment_id'  => (string) $paymentId,
+            'vendor_transaction_id' => (string) $vendorTransactionId,
+        ));
     }
 }

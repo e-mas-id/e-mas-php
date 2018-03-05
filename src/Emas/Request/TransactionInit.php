@@ -19,6 +19,7 @@ class TransactionInit
 
     public function setCustomerId($customerId) {
         $this->customerId = $customerId;
+        return $this;
     }
 
     public function getWeight() {
@@ -27,5 +28,6 @@ class TransactionInit
 
     public function setWeight($weight) {
         $this->weight = $weight;
+        return $this;
     }
 }
