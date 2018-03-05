@@ -1,0 +1,21 @@
+{
+    "name": "e-mas-id/e-mas-php",
+    "description": "Library to connect to e-mas API",
+    "authors": [
+        {
+            "name": "e-mas developer",
+            "email": "dev@e-mas.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Emas": "src/" }
+    },
+    "target-dir": "/",
+    "require": {
+        "php": ">=5.4",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*"
+    }
+}
