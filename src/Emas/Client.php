@@ -93,8 +93,7 @@ final class Client
      * @return \StdClass
      */
     public function getProduct(){
-        return $this->call('/thirdparty/buy-gold','GET',[]);
-        
+        return $this->call('/thirdparty/buy-gold','GET',[]);   
     }
      
     /**
