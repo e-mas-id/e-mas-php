@@ -94,6 +94,7 @@ final class Client
      */
     public function getProduct(){
         return $this->call('/thirdparty/buy-gold','GET',[]);
+        
     }
      
     /**
