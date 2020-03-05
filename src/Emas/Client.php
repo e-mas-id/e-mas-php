@@ -72,4 +72,36 @@ final class Client
             'vendor_transaction_id' => (string) $vendorTransactionId,
         ));
     }
+    
+    /**
+     * Cancel transaction
+     * 
+     * @param string    $merchantCustomerId
+     * @param string    $paymentId
+     * @param string    $vendorTransactionId
+     * @return \StdClass
+     */
+    public function buyCancel($merchantCustomerId,$paymentId, $vendorTransactionId){
+        return $this->call('/thirdparty/buy-gold-cancel','POST',array(
+            'merchant_customer_id' => (string) $merchantCustomerId,
+            'payment_id'  => (string) $paymentId,
+            'vendor_transaction_id' => (string) $vendorTransactionId,
+        ));
+    }
+    /**
+     * Get product
+     * @return \StdClass
+     */
+    public function getProduct(){
+        return $this->call('/thirdparty/buy-gold','GET',[]);
+    }
+     
+    /**
+     * Get product price history
+     * @return \StdClass
+     */
+    public function getProductPriceHistory(){
+        return $this->call('/thirdparty/product-log','GET',[]);
+    }
+    
 }
