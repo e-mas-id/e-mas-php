@@ -47,12 +47,14 @@ final class Client
      * Init transaction
      * 
      * @param string    $customerId
+     * @param string    $merchantCustomerId
      * @param float     $weight
      * @return \StdClass
      */
-    public function buyInit($customerId, $weight) {
+    public function buyInit($customerId,$merchantCustomerId,$weight) {
         return $this->call('/thirdparty/buy-gold', 'POST', array(
             'customer_id'   => (string) $customerId,
+            'merchant_customer_id' => (string) $merchantCustomerId,
             'weight'        => (float) $weight,
         ));
     }
@@ -103,5 +105,48 @@ final class Client
     public function getProductPriceHistory(){
         return $this->call('/thirdparty/product-log','GET',[]);
     }
-    
+    /**
+     * Post sell init
+     * @param string    $customerId
+     * @param string    $merchantCustomerId
+     * @param float     $weight
+     * @return \StdClass
+     */
+    public function sellInit($customerId, $merchantCustomerId,$weight){
+        return $this->call('/thirdparty/sell-gold','POST',array(
+            'customer_id'   => (string) $customerId,
+            'merchant_customer_id' =>(string) $merchantCustomerId,
+            'weight'        => (float) $weight,
+        ));
+    }
+    /**
+     * Post sell confirmation
+     * @param string    $customerId
+     * @param string    $paymentId
+     * @param float     $vendorTransactionId
+     * @return \StdClass
+     */
+    public function sellConfirmation($customerId, $paymentId, $vendorTransactionId){
+        return $this->call('/thirdparty/sell-gold-confirm','POST',array(
+            'customer_id' => (string) $customerId,
+            'payment_id'  => (string) $paymentId,
+            'vendor_transaction_id' => (string) $vendorTransactionId,
+        ));
+    }
+
+    /**
+     * Post sell reversal
+     * @param string    $customerId
+     * @param string    $paymentId
+     * @param float     $vendorTransactionId
+     * @return \StdClass
+     */
+    public function sellReversal($customerId, $paymentId, $vendorTransactionId){
+        return $this->call('/thirdparty/sell-gold-reverse','POST',array(
+            'customer_id' => (string) $customerId,
+            'payment_id'  => (string) $paymentId,
+            'vendor_transaction_id' => (string) $vendorTransactionId,
+        ));
+    }
+
 }
